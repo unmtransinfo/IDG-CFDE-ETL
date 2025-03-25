@@ -30,8 +30,9 @@ MANIFEST
 pip-log.txt
 pip-delete-this-directory.txt
 
-# log direcory
+# log direcories
 log/
+TDLBase/log/
 
 # Jupyter Notebook
 .ipynb_checkpoints
@@ -51,6 +52,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+.python-version
 
 # PyPI configuration file
 .pypirc

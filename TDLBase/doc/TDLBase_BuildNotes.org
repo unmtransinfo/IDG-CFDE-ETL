@@ -1,0 +1,109 @@
+
+* TDLBase v1 Build Notes
+
+** Create an empty schema, and insert dbinfo and info_types
+mysql> create database tdlb;
+mysql> use tdlb
+mysql> \. create-TDLB.sql
+
+** XX ETL
+*** *Download Required:* Yes/No
+*** *Pre-processing required:* None
+*** *Example Output:* 
+*** *Manual post-processing:* None
+
+
+
+
+** UniProt ETL
+*** *Download Required:* No, done by ETL script
+*** *Pre-processing required:* None
+*** *Example Output:* 
+(tkb) [smathias@habanero python]$ ./load-UniProt.py --dbname tdlb
+
+load-UniProt.py (v1.0.0) [Thu Feb 13 14:01:14 2025]:
+
+Connected to TDLBase: tdlb (schema ver 1.0.0; data ver 1.0.0)
+
+Downloading https://raw.githubusercontent.com/evidenceontology/evidenceontology/master/eco.obo
+         to ../data/EvidenceOntology/eco.obo
+
+Downloading ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/taxonomic_divisions/uniprot_sprot_human.xml.gz
+         to uniprot_sprot_human.xml.gz
+Uncompressing ../data/UniProt/uniprot_sprot_human.xml.gz
+
+Parsing Evidence Ontology file ../data/EvidenceOntology/eco.obo
+
+Parsing file ../data/UniProt/uniprot_sprot_human.xml
+Loading data for 20417 UniProt records
+Progress: [##################################################] 100.0% Done.
+Processed 20417 UniProt records.
+  Loaded 20417 targets
+
+load-UniProt.py: Done. Elapsed time: 0:05:51.962
+
+
+*** *Manual post-processing:* Yes
+    Update Gene IDs with:
+    mysql> \. SQL/tdlb_update_geneids.sql
+
+
+** HGNC ETL
+*** *Download Required:* Yes
+    Download a custom TSV file from
+   https://www.genenames.org/download/custom/ with fields: HGNC ID,Approved symbol,Approved name,Status,Chromosome,NCBI Gene ID,UniProt ID
+*** *Pre-processing required:* None
+*** *Example Output:* 
+(tkb) [smathias@habanero python]$ ./load-HGNC.py --dbname tdlb --loglevel 20
+
+load-HGNC.py (v1.0.0) [Thu Feb 13 17:49:39 2025]:
+
+Connected to TDLBase:: tdlb (schema ver 1.0.0; data ver 1.0.0)
+
+Processing 44057 lines in file ../data/HGNC/HGNC_20250213.tsv
+Progress: [##################################################] 100.0% Done.
+Processed 44057 lines - 20243 targets annotated.
+No target found for 10 lines (with UniProts).
+  Inserted 20243 HGNC ID xrefs
+  Updated 20243 target.chr values.
+  Inserted 0 new HGNC symbols
+WARNING: Found 42 discrepant HGNC symbols. See logfile ../log/TDLBase//load-HGNC.py.log for details
+  Inserted 1444 new NCBI Gene IDs
+WARNING: Found 82 discrepant NCBI Gene IDs. See logfile ../log/TDLBase//load-HGNC.py.log for details
+
+load-HGNC.py: Done. Elapsed time: 0:07:45.799
+*** *Manual post-processing:* None
+
+** NCBI GIs ETL
+*** *Download Required:* No, done by ETL script
+*** *Pre-processing required:* None
+*** *Example Output:* 
+(tkb) [smathias@habanero python]$ ./load-HGNC.py --dbname tdlb --loglevel 20
+
+load-HGNC.py (v1.0.0) [Thu Feb 13 17:49:39 2025]:
+
+Connected to TDLBase:: tdlb (schema ver 1.0.0; data ver 1.0.0)
+
+Processing 44057 lines in file ../data/HGNC/HGNC_20250213.tsv
+Progress: [##################################################] 100.0% Done.
+Processed 44057 lines - 20243 targets annotated.
+No target found for 10 lines (with UniProts).
+  Inserted 20243 HGNC ID xrefs
+  Updated 20243 target.chr values.
+  Inserted 0 new HGNC symbols
+WARNING: Found 42 discrepant HGNC symbols. See logfile ../log/TDLBase//load-HGNC.py.log for details
+  Inserted 1444 new NCBI Gene IDs
+WARNING: Found 82 discrepant NCBI Gene IDs. See logfile ../log/TDLBase//load-HGNC.py.log for details
+
+load-HGNC.py: Done. Elapsed time: 0:07:45.799
+*** *Manual post-processing:* None
+
+
+** XX ETL
+*** *Download Required:* Yes/No
+*** *Pre-processing required:* None
+*** *Example Output:* 
+*** *Manual post-processing:* None
+
+
+
