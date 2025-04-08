@@ -16,7 +16,9 @@ datasets necessary to generate the Target Development Level (TDL) labels
 for all human targets. Like TCRD, TDLBase is a MySQL database, but with
 a vastly simplified schema. There is one ETL script per data source, and all
 scripts interact with the database via the TDLB.Adaptor API.
+
 ./TDLBase/python/TDLB/ :
+
     - Adaptor.py
     - Create.py
     - Read.py
